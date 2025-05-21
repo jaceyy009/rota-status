@@ -18,6 +18,7 @@
       border-radius: 6px;
       width: fit-content;
       background-color: #fff;
+      position: relative;
     }
     .grade {
       font-weight: bold;
@@ -38,10 +39,26 @@
     .reload-btn:hover {
       background-color: #ddd;
     }
+    .spinner {
+      display: none;
+      width: 12px;
+      height: 12px;
+      border: 2px solid #ccc;
+      border-top: 2px solid #555;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <div class="status-box">
+    <div class="spinner" id="spinner"></div>
     <div class="grade" id="grade">Loading status...</div>
     <div class="timestamp" id="timestamp"></div>
     <button class="reload-btn" onclick="updateStatus()">Reload Status</button>
@@ -74,17 +91,23 @@
     }
 
     function updateStatus() {
-      const gradePool = isPeakHour() ? grades_peak : grades_offpeak;
-      const selected = gradePool[Math.floor(Math.random() * gradePool.length)];
+      const spinner = document.getElementById("spinner");
+      spinner.style.display = "block";
 
-      const now = new Date();
-      const time = now.toLocaleString('en-US', {
-        month: 'short', day: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit', hour12: true
-      });
+      setTimeout(() => {
+        const gradePool = isPeakHour() ? grades_peak : grades_offpeak;
+        const selected = gradePool[Math.floor(Math.random() * gradePool.length)];
 
-      document.getElementById("grade").innerText = selected;
-      document.getElementById("timestamp").innerText = `(Last update: ${time})`;
+        const now = new Date();
+        const time = now.toLocaleString('en-US', {
+          month: 'short', day: '2-digit', year: 'numeric',
+          hour: '2-digit', minute: '2-digit', hour12: true
+        });
+
+        document.getElementById("grade").innerText = selected;
+        document.getElementById("timestamp").innerText = `(Last update: ${time})`;
+        spinner.style.display = "none";
+      }, 600); // Short delay to simulate loading
     }
 
     updateStatus();
