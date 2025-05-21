@@ -26,12 +26,25 @@
     .timestamp {
       color: #777;
     }
+    .reload-btn {
+      margin-top: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      background-color: #eee;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+    }
+    .reload-btn:hover {
+      background-color: #ddd;
+    }
   </style>
 </head>
 <body>
   <div class="status-box">
     <div class="grade" id="grade">Loading status...</div>
     <div class="timestamp" id="timestamp"></div>
+    <button class="reload-btn" onclick="updateStatus()">Reload Status</button>
   </div>
 
   <script>
